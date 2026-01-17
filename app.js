@@ -25,6 +25,7 @@ const Listing = require("./models/listing.js");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
+const bookingRouter = require("./routes/booking.js");
 
 //Database connection
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
@@ -32,18 +33,18 @@ const dbUrl = process.env.ATLASDB_URL;
 
 main().then(() => {
     console.log("connected to DB")
-}).catch((err) =>{
+}).catch((err) => {
     console.log(err);
 });
 
 
 async function main() {
-  await mongoose.connect(dbUrl);
+    await mongoose.connect(dbUrl);
 }
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use(express.urlencoded({extended : true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
@@ -52,11 +53,11 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
-    crypto : {
-        secret : process.env.SECRET,
+    crypto: {
+        secret: process.env.SECRET,
         // secret : "omnamahshivay"
     },
-    touchAfter : 24 * 3600
+    touchAfter: 24 * 3600
 })
 
 store.on("error", () => {
@@ -64,16 +65,16 @@ store.on("error", () => {
 })
 
 const sessionOptions = {
-    store : store,
-    secret : process.env.SECRET,
+    store: store,
+    secret: process.env.SECRET,
     // secret : "omnamahshivay",
-    resave : false,
-    saveUninitialized : false,
-    cookie : {
-        expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
-        maxAge : 7 * 24 * 60 * 60 * 1000,
-        httpOnly : true,
-        secure: false ,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: false,
         // secure: process.env.NODE_ENV === "production",
         // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
         // samSite: "lax"
@@ -95,10 +96,18 @@ passport.deserializeUser(User.deserializeUser());
 //     res.send("Hi, I am root");
 // });
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
-    res.locals.currUser = req.user || null;
+
+    // Populate wishlist if user is logged in
+    if (req.user) {
+        const User = require("./models/user.js");
+        const userWithWishlist = await User.findById(req.user._id);
+        res.locals.currUser = userWithWishlist;
+    } else {
+        res.locals.currUser = null;
+    }
     next();
 });
 
@@ -112,6 +121,7 @@ app.use((req, res, next) => {
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+app.use("/", bookingRouter);
 
 
 
@@ -122,8 +132,8 @@ app.use((req, res, next) => {
 
 
 app.use((err, req, res, next) => {
-    let {statusCode = 500, message = "Something went wrong!"} = err;
-    res.status(statusCode).render("error.ejs", { message});
+    let { statusCode = 500, message = "Something went wrong!" } = err;
+    res.status(statusCode).render("error.ejs", { message });
     // res.status(statusCode).send(message);
 });
 
@@ -141,18 +151,18 @@ app.use((err, req, res, next) => {
 
 
 
-app.get("/testListing", async(req, res) => {
+app.get("/testListing", async (req, res) => {
     let sampleListing = new Listing({
-        title : "My New Villa",
-        description : "By the beach",
-        price : 1200,
-        location : "Calangaute, Goa",
-        country : "India"
+        title: "My New Villa",
+        description: "By the beach",
+        price: 1200,
+        location: "Calangaute, Goa",
+        country: "India"
     });
     await sampleListing.save();
     console.log("sample was saved");
     res.send("successful testing");
 })
-app.listen("8080", () =>{
+app.listen("8080", () => {
     console.log("server is listening to port 8080");
 })

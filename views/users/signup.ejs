@@ -1,28 +1,173 @@
-<% layout ("/layouts/boilerplate")%>
+<% layout("/layouts/boilerplate")%>
 
-    <div class="row mt-3">
-        <h1 class = "col-6 offset-3">SignUp on WanderLust</h1>
-        <div class="col-6 offset-3">
+    <style>
+        .auth-container {
+            max-width: 450px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E7EB;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header .logo {
+            font-size: 2.5rem;
+            color: #FE424D;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: #6B7280;
+            font-size: 0.95rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 2px solid #E5E7EB;
+            border-radius: 0.75rem;
+            padding: 0.875rem 1rem;
+            font-size: 1rem;
+            transition: all 0.15s ease;
+        }
+
+        .form-control:focus {
+            border-color: #FE424D;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+        }
+
+        .btn-auth {
+            width: 100%;
+            background: linear-gradient(135deg, #FE424D 0%, #FF5A5F 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.25s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.3);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6B7280;
+        }
+
+        .auth-footer a {
+            color: #FE424D;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .features-list {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            color: #6B7280;
+            font-size: 0.75rem;
+        }
+
+        .feature-item i {
+            font-size: 1.25rem;
+            color: #FE424D;
+        }
+    </style>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fa-regular fa-compass logo"></i>
+                <h1>Create Account</h1>
+                <p>Join WanderLust and start exploring</p>
+            </div>
+
             <form action="/signup" method="POST" class="needs-validation" novalidate>
                 <div class="mb-3">
-                    <label for="username" class=" for-label">Username</label>
-                    <input type="text" name="username" id="username" class=" form-control" required>
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" name="username" id="username" class="form-control"
+                        placeholder="Choose a username" required>
                     <div class="valid-feedback">Looks good!</div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="email" class="for-label">Email</label>
-                    <input type="email" name="email" id="email" class=" form-control" required>
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="you@example.com"
+                        required>
                     <div class="valid-feedback">Looks good!</div>
-                     <div class="invalid-feedback">Please enter a valid email address.</div>
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="for-label">Password</label>
-                    <input type="password" name="password" id="password" class=" form-control" required>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" id="password" class="form-control"
+                        placeholder="Create a strong password" required>
                     <div class="valid-feedback">Looks good!</div>
                 </div>
-                <button class = "btn btn-success">SignUp</button>
+
+                <button class="btn-auth" type="submit">
+                    <i class="fa-solid fa-user-plus me-2"></i>Create Account
+                </button>
             </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="/login">Login</a></p>
+            </div>
+
+            <div class="features-list">
+                <div class="feature-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Secure</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Fast</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>Global</span>
+                </div>
+            </div>
         </div>
     </div>

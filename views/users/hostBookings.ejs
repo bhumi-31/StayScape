@@ -1,0 +1,264 @@
+<% layout("/layouts/boilerplate")%>
+
+    <style>
+        .bookings-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .bookings-header {
+            margin-bottom: 2rem;
+        }
+
+        .bookings-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1F2937;
+        }
+
+        .bookings-header p {
+            color: #6B7280;
+            margin-top: 0.5rem;
+        }
+
+        .booking-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            transition: box-shadow 0.25s ease;
+        }
+
+        .booking-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-content {
+            display: grid;
+            grid-template-columns: 180px 1fr auto;
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .booking-image {
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 0.75rem;
+        }
+
+        .booking-details h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            color: #6B7280;
+            font-size: 0.85rem;
+        }
+
+        .booking-meta i {
+            width: 18px;
+            color: #FE424D;
+        }
+
+        .guest-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .guest-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FE424D 0%, #FF5A5F 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .booking-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-confirmed {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-cancelled {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .booking-actions {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .booking-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1F2937;
+        }
+
+        .booking-price span {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #6B7280;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #E5E7EB;
+            padding-bottom: 0;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            color: #6B7280;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.15s ease;
+        }
+
+        .tab:hover {
+            color: #FE424D;
+        }
+
+        .tab.active {
+            color: #FE424D;
+            border-bottom-color: #FE424D;
+        }
+
+        .no-bookings {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid #E5E7EB;
+        }
+
+        .no-bookings i {
+            font-size: 3rem;
+            color: #FE424D;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .booking-content {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-image {
+                width: 100%;
+                height: 160px;
+            }
+        }
+    </style>
+
+    <div class="bookings-container">
+        <div class="bookings-header">
+            <h1><i class="fa-solid fa-house-user me-2" style="color: #FE424D;"></i>Hosting Dashboard</h1>
+            <p>Manage reservations for your properties</p>
+        </div>
+
+        <div class="tabs">
+            <a href="/bookings" class="tab">
+                <i class="fa-solid fa-suitcase me-1"></i>My Trips
+            </a>
+            <a href="/bookings/hosting" class="tab active">
+                <i class="fa-solid fa-house me-1"></i>Hosting
+            </a>
+        </div>
+
+        <% if (bookings.length===0) { %>
+            <div class="no-bookings">
+                <i class="fa-solid fa-calendar-xmark"></i>
+                <h3>No reservations yet</h3>
+                <p>When guests book your listings, they'll appear here.</p>
+            </div>
+            <% } else { %>
+                <% for (let booking of bookings) { %>
+                    <div class="booking-card">
+                        <div class="booking-content">
+                            <img src="<%= booking.listing.image.url %>" alt="<%= booking.listing.title %>"
+                                class="booking-image">
+
+                            <div class="booking-details">
+                                <h3>
+                                    <%= booking.listing.title %>
+                                </h3>
+                                <div class="booking-meta">
+                                    <span>
+                                        <i class="fa-solid fa-calendar"></i>
+                                        <%= booking.checkIn.toLocaleDateString('en-IN', { day: 'numeric' ,
+                                            month: 'short' }) %> →
+                                            <%= booking.checkOut.toLocaleDateString('en-IN', { day: 'numeric' ,
+                                                month: 'short' , year: 'numeric' }) %>
+                                    </span>
+                                    <span>
+                                        <i class="fa-solid fa-users"></i>
+                                        <%= booking.guests %> guest<%= booking.guests> 1 ? 's' : '' %>
+                                    </span>
+                                </div>
+                                <div class="guest-info">
+                                    <div class="guest-avatar">
+                                        <%= booking.guest.username.charAt(0).toUpperCase() %>
+                                    </div>
+                                    <div>
+                                        <strong>
+                                            <%= booking.guest.username %>
+                                        </strong>
+                                        <div style="font-size: 0.8rem; color: #6B7280;">
+                                            <%= booking.guest.email %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="booking-actions">
+                                <div class="booking-price">
+                                    &#8377;<%= booking.totalPrice.toLocaleString('en-IN') %>
+                                        <span>earnings</span>
+                                </div>
+                                <span class="booking-status status-<%= booking.status %>">
+                                    <%= booking.status %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                        <% } %>
+    </div>

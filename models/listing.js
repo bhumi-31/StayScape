@@ -9,55 +9,98 @@ const listingSchema = new Schema({
   },
   description: String,
   image: {
-    url : String,
-    filename : String,
+    url: String,
+    filename: String,
   },
-  category : {
-    type : String,
-    enum : [
-        "Trending",
-        "Rooms",
-        "Iconic Cities",
-        "Mountains",
-        "Castles",
-        "Amazing Pools",
-        "Camping",
-        "Farms",
-        "Arctic",
-        "Domes",
-        "Boats"
+  // Multiple images support
+  images: [{
+    url: String,
+    filename: String,
+  }],
+  category: {
+    type: String,
+    enum: [
+      "Trending",
+      "Rooms",
+      "Iconic Cities",
+      "Mountains",
+      "Castles",
+      "Amazing Pools",
+      "Camping",
+      "Farms",
+      "Arctic",
+      "Domes",
+      "Boats"
     ],
-    required : true
+    default: "Trending"
   },
   price: Number,
   location: String,
   country: String,
-  reviews : [
+  reviews: [
     {
-      type : Schema.Types.ObjectId,
-      ref : "Review"
+      type: Schema.Types.ObjectId,
+      ref: "Review"
     }
   ],
-  owner :{
-    type : Schema.Types.ObjectId,
-    ref : "User",
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
-  geometry : {
-    type : {
-      type : String,
-      enum : ['Point'],
-      required : true,
+  geometry: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true,
     },
-    coordinates : {
-      type : [Number],
-      required : true,
+    coordinates: {
+      type: [Number],
+      required: true,
     }
   },
+  // Amenities
+  amenities: [{
+    type: String,
+    enum: [
+      "WiFi",
+      "AC",
+      "TV",
+      "Kitchen",
+      "Washer",
+      "Parking",
+      "Pool",
+      "Hot Tub",
+      "Gym",
+      "BBQ",
+      "Fireplace",
+      "Balcony",
+      "Garden",
+      "Beach Access",
+      "Ski Access",
+      "Pet Friendly",
+      "Smoking Allowed",
+      "Workspace",
+      "First Aid Kit",
+      "Fire Extinguisher"
+    ]
+  }],
 });
 
-listingSchema.post("findOneAndDelete", async(listing) => {
-  if(listing){
-    await Review.deleteMany({_id : {$in : listing.reviews}});
+// Virtual to get all images (combines primary image with additional images)
+listingSchema.virtual("allImages").get(function () {
+  const all = [];
+  if (this.image && this.image.url) {
+    all.push(this.image);
+  }
+  if (this.images && this.images.length > 0) {
+    all.push(...this.images);
+  }
+  return all;
+});
+
+listingSchema.post("findOneAndDelete", async (listing) => {
+  if (listing) {
+    await Review.deleteMany({ _id: { $in: listing.reviews } });
   }
 })
 

@@ -1,54 +1,478 @@
 <style>
-  .search-btn{
-    background-color: #fe424d;
-    color : white;
+  .search-btn {
+    background: var(--gradient-primary);
+    color: white;
     border-radius: 25px;
-    padding: 0 1rem 0 1rem;
+    padding: 0.6rem 1.25rem;
+    font-weight: 600;
+    border: none;
+    transition: all 0.25s ease;
   }
-  .search-btn:hover{
-    background-color: #fe424d;
-    color : white;
+
+  .search-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background: var(--gradient-primary);
+    color: white;
   }
+
   .search-btn i {
     display: inline;
     margin-right: 0.5rem;
   }
 
-  .search-input{
+  .search-input {
+    border: 2px solid #E5E7EB;
     border-radius: 25px;
-    padding: 0.5rem 3rem 0.5rem 3rem;
-    font-size: 1rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.95rem;
+    min-width: 280px;
+    transition: all 0.15s ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(254, 66, 77, 0.15);
+  }
+
+  .brand-text {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    color: var(--primary);
+    margin-left: 0.5rem;
+  }
+
+  .nav-link-host {
+    background: transparent;
+    color: #222 !important;
+    border-radius: 25px;
+    padding: 0.65rem 1rem !important;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    margin-right: 0.5rem;
+  }
+
+  .nav-link-host:hover {
+    background: #F7F7F7;
+  }
+
+  /* User Menu Toggle Button */
+  .user-menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.35rem 0.75rem 0.35rem 0.35rem;
+    border: 1px solid #DDDDDD;
+    border-radius: 21px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .user-menu-toggle:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+  }
+
+  .hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .hamburger-icon span {
+    display: block;
+    width: 16px;
+    height: 2px;
+    background: #222;
+    border-radius: 1px;
+  }
+
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #717171;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+  }
+
+  .user-avatar-logged-in {
+    background: var(--primary);
+  }
+
+  /* Dropdown Menu */
+  .user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.75rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+    min-width: 240px;
+    padding: 0.5rem 0;
+    display: none;
+    z-index: 1000;
+  }
+
+  .user-dropdown.show {
+    display: block;
+  }
+
+  .dropdown-item-custom {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #222;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background 0.15s ease;
+  }
+
+  .dropdown-item-custom:hover {
+    background: #F7F7F7;
+    color: #222;
+  }
+
+  .dropdown-item-custom i {
+    width: 20px;
+    text-align: center;
+    color: #717171;
+  }
+
+  .dropdown-item-custom.bold {
+    font-weight: 600;
+  }
+
+  .dropdown-divider-custom {
+    height: 1px;
+    background: #EBEBEB;
+    margin: 0.5rem 0;
+  }
+
+  .become-host-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: #222;
+  }
+
+  .become-host-item:hover {
+    background: #F7F7F7;
+  }
+
+  .become-host-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .become-host-text span:first-child {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .become-host-text span:last-child {
+    font-size: 0.8rem;
+    color: #717171;
+  }
+
+  .become-host-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .user-menu-wrapper {
+    position: relative;
+  }
+
+  @media (max-width: 992px) {
+    .search-input {
+      min-width: 180px;
+    }
+
+    .brand-text {
+      display: none;
+    }
+
+    .user-dropdown {
+      right: -10px;
+    }
+  }
+
+  /* Mobile Navbar Fixes */
+  @media (max-width: 991px) {
+    .navbar-collapse {
+      padding: 1rem 0;
+    }
+
+    .navbar-nav {
+      align-items: flex-start !important;
+      width: 100%;
+    }
+
+    .navbar-nav .nav-link {
+      padding: 0.75rem 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    .navbar-nav.ms-auto {
+      margin-left: 0 !important;
+      margin-top: 1rem;
+      align-items: center !important;
+    }
+
+    .navbar-nav .d-flex {
+      flex-direction: column;
+      width: 100%;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .navbar-nav form.d-flex {
+      flex-direction: row;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 0;
+      max-width: 280px;
+    }
+
+    .nav-link-host {
+      text-align: center;
+      padding-left: 0 !important;
+      margin-right: 0;
+    }
+
+    /* Hide user menu toggle in mobile */
+    .user-menu-wrapper {
+      display: none !important;
+    }
+
+    .dark-mode-toggle {
+      display: inline-flex !important;
+      margin-top: 0.75rem;
+      margin-left: 0 !important;
+    }
+
+    /* Center items in mobile collapsed menu */
+    .navbar-nav.d-flex.align-items-center {
+      align-items: center !important;
+      justify-content: center;
+    }
+
+    /* Mobile menu items styling */
+    .mobile-nav-items {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0.5rem;
+    }
+
+    .mobile-nav-items .nav-link {
+      text-align: center;
+      width: 100%;
+    }
+
+    .mobile-nav-items hr {
+      width: 80%;
+      margin: 0.5rem auto;
+    }
   }
 </style>
 <nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-regular fa-compass"></i>
+      <span class="brand-text">StayScape</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        
         <a class="nav-link" href="/listings">Explore</a>
-        
-      </div>
-      <div class = "navbar-nav ms-auto">
-        <form class="d-flex" role="search" action = "/listings" method = "GET">
-          <input class="form-control me-2 search-input" type="search" name = "q" placeholder="Search destinations"/>
-          <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
-        </form>
+        <a class="nav-link" href="/listings/map">
+          <i class="fa-solid fa-map-location-dot me-1"></i>Map
+        </a>
+        <!-- Mobile-only menu items (hidden on desktop) -->
+        <div class="d-lg-none mobile-nav-items">
+          <hr class="my-2">
+          <% if(currUser) { %>
+            <a class="nav-link" href="/wishlist">
+              <i class="fa-regular fa-heart me-2"></i>Wishlists
+            </a>
+            <a class="nav-link" href="/bookings">
+              <i class="fa-solid fa-suitcase me-2"></i>Bookings
+            </a>
+            <a class="nav-link" href="/profile/<%= currUser.username %>">
+              <i class="fa-regular fa-user me-2"></i>Profile
+            </a>
+            <hr class="my-2">
+            <a class="nav-link" href="/logout">
+              <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>Log out
+            </a>
+            <% } else { %>
+              <a class="nav-link" href="/signup">
+                <i class="fa-solid fa-user-plus me-2"></i>Sign up
+              </a>
+              <a class="nav-link" href="/login">
+                <i class="fa-solid fa-right-to-bracket me-2"></i>Log in
+              </a>
+              <% } %>
+        </div>
       </div>
       <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listings/new">Airbnb your home</a>
-        <%if(!currUser){%>
+        <form class="d-flex" role="search" action="/listings" method="GET">
+          <input class="form-control me-2 search-input" type="search" name="q" placeholder="Search destinations"
+            aria-label="Search" />
+          <button class="btn search-btn" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>Search
+          </button>
+        </form>
+      </div>
+      <div class="navbar-nav ms-auto d-flex align-items-center">
+        <% if(currUser) { %>
+          <a class="nav-link nav-link-host" href="/listings/new">
+            Switch to hosting
+          </a>
+          <% } else { %>
+            <a class="nav-link nav-link-host" href="/listings/new">
+              Become a Host
+            </a>
+            <% } %>
 
-          <a class="nav-link" aria-current="page" href="/signup"><b>SignUp</b></a>
-          <a class="nav-link" href="/login"><b>Log in</b></a>
-        <%}%>
-        <%if(currUser){%>
-        <a class="nav-link" href="/logout">Log out</a>
-        <%}%>
+              <!-- User Menu Toggle -->
+              <div class="user-menu-wrapper">
+                <button class="user-menu-toggle" id="userMenuToggle" type="button">
+                  <% if(currUser) { %>
+                    <div class="user-avatar user-avatar-logged-in">
+                      <%= currUser.username.charAt(0).toUpperCase() %>
+                    </div>
+                    <% } else { %>
+                      <div class="user-avatar">
+                        <i class="fa-solid fa-user"></i>
+                      </div>
+                      <% } %>
+                        <div class="hamburger-icon">
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </div>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div class="user-dropdown" id="userDropdown">
+                  <% if(currUser) { %>
+                    <!-- Logged In User Menu -->
+                    <a class="dropdown-item-custom bold" href="/wishlist">
+                      <i class="fa-regular fa-heart"></i>Wishlists
+                    </a>
+                    <a class="dropdown-item-custom" href="/bookings">
+                      <i class="fa-solid fa-suitcase"></i>Bookings
+                    </a>
+                    <a class="dropdown-item-custom" href="/profile/<%= currUser.username %>">
+                      <i class="fa-regular fa-user"></i>Profile
+                    </a>
+
+                    <div class="dropdown-divider-custom"></div>
+
+                    <a class="become-host-item" href="/listings/new">
+                      <div class="become-host-text">
+                        <span>Become a host</span>
+                        <span>It's easy to start hosting and earn extra income.</span>
+                      </div>
+                    </a>
+
+                    <div class="dropdown-divider-custom"></div>
+
+                    <a class="dropdown-item-custom" href="/logout">
+                      <i class="fa-solid fa-arrow-right-from-bracket"></i>Log out
+                    </a>
+                    <% } else { %>
+                      <!-- Guest User Menu -->
+                      <a class="dropdown-item-custom bold" href="/signup">
+                        Sign up
+                      </a>
+                      <a class="dropdown-item-custom" href="/login">
+                        Log in
+                      </a>
+
+                      <div class="dropdown-divider-custom"></div>
+
+                      <a class="dropdown-item-custom" href="/listings/new">
+                        Host your home
+                      </a>
+                      <% } %>
+                </div>
+              </div>
+
+              <!-- Dark Mode Toggle -->
+              <button class="dark-mode-toggle ms-2" id="darkModeToggle" title="Toggle Dark Mode">
+                <i class="fa-solid fa-moon" id="darkModeIcon"></i>
+              </button>
       </div>
     </div>
   </div>
 </nav>
+
+<script>
+  // User Dropdown Toggle
+  const userMenuToggle = document.getElementById('userMenuToggle');
+  const userDropdown = document.getElementById('userDropdown');
+
+  userMenuToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    userDropdown.classList.toggle('show');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!userDropdown.contains(e.target) && !userMenuToggle.contains(e.target)) {
+      userDropdown.classList.remove('show');
+    }
+  });
+
+  // Dark Mode Toggle
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const darkModeIcon = document.getElementById('darkModeIcon');
+  const html = document.documentElement;
+
+  // Check for saved theme preference or default to light
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  if (savedTheme === 'dark') {
+    html.setAttribute('data-theme', 'dark');
+    darkModeIcon.classList.remove('fa-moon');
+    darkModeIcon.classList.add('fa-sun');
+  }
+
+  darkModeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+
+    if (currentTheme === 'dark') {
+      html.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+      darkModeIcon.classList.remove('fa-sun');
+      darkModeIcon.classList.add('fa-moon');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+      darkModeIcon.classList.remove('fa-moon');
+      darkModeIcon.classList.add('fa-sun');
+    }
+  });
+</script>

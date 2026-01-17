@@ -1,205 +1,257 @@
-<% layout ("/layouts/boilerplate")%>
+<% layout("/layouts/boilerplate")%>
     <%= success %>
-        <!-- <h3>All Listings</h3> -->
-        <!-- <form method = "GET" action="/listings/new">
-        <button>Create New Listing</button>
-    </form> -->
 
-        <style>
-            #filters {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-            }
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Find your next <span>adventure</span></h1>
+                <p class="hero-subtitle">Discover unique stays and experiences around the world. From mountain cabins to
+                    beachfront villas, your perfect getaway awaits.</p>
+                <div class="hero-cta">
+                    <a href="#listings" class="btn-primary-custom">
+                        <i class="fa-solid fa-compass me-2"></i>Explore Stays
+                    </a>
+                    <a href="/listings/new" class="btn-secondary-custom">
+                        <i class="fa-solid fa-plus me-2"></i>Become a Host
+                    </a>
+                </div>
+            </div>
+        </div>
 
-            .filter {
-                text-align: center;
-                margin-right: 2rem;
-                margin-top: 2rem;
-                opacity: 0.7;
-            }
-
-            .filter:hover {
-                opacity: 1;
-                cursor: pointer;
-            }
-
-            .filter p {
-                font-size: 0.8rem;
-            }
-
-            .tax-info {
-                display: none;
-
-            }
-
-            .tax-toggle {
-                border: 1px solid black;
-                border-radius: 1rem;
-                height: 3.25rem;
-                padding: 1rem;
-                margin-left: 2rem;
-                display: flex;
-                align-items: center;
-            }
-
-            .filter a {
-                text-decoration: none;
-                color: black;
-                display: block;
-            }
-
-            .active {
-                border-bottom: 2px solid black;
-                opacity: 1 !important;
-
-            }
-        </style>
-        
+        <!-- Category Filters -->
         <div id="filters">
             <div class="filter <%= category === 'Trending' ? 'active' : '' %>">
                 <a href="/listings?category=Trending">
-                    <div><i class="fa-solid fa-fire"></i></div>
+                    <i class="fa-solid fa-fire"></i>
                     <p>Trending</p>
                 </a>
             </div>
             <div class="filter <%= category === 'Rooms' ? 'active' : '' %>">
                 <a href="/listings?category=Rooms">
-                    <div><i class="fa-solid fa-bed"></i></div>
+                    <i class="fa-solid fa-bed"></i>
                     <p>Rooms</p>
                 </a>
             </div>
             <div class="filter <%= category === 'Iconic Cities' ? 'active' : '' %>">
                 <a href="/listings?category=Iconic Cities">
-                    <div><i class="fa-solid fa-mountain-city"></i></div>
+                    <i class="fa-solid fa-mountain-city"></i>
                     <p>Iconic Cities</p>
                 </a>
             </div>
             <div class="filter <%= category === 'Mountains' ? 'active' : '' %>">
                 <a href="/listings?category=Mountains">
-                    <div><i class="fa-solid fa-mountain-sun"></i></div>
+                    <i class="fa-solid fa-mountain-sun"></i>
                     <p>Mountains</p>
                 </a>
             </div>
             <div class="filter <%= category === 'Castles' ? 'active' : '' %>">
                 <a href="/listings?category=Castles">
-                    <div><i class="fa-brands fa-fort-awesome"></i></div>
+                    <i class="fa-brands fa-fort-awesome"></i>
                     <p>Castles</p>
                 </a>
             </div>
             <div class="filter <%= category === 'Amazing Pools' ? 'active' : '' %>">
                 <a href="/listings?category=Amazing Pools">
-                    <div><i class="fa-solid fa-person-swimming"></i></div>
-                    <p>Amazing Pools</p>
+                    <i class="fa-solid fa-person-swimming"></i>
+                    <p>Pools</p>
                 </a>
             </div>
             <div class="filter <%= category === 'Camping' ? 'active' : '' %>">
                 <a href="/listings?category=Camping">
-                    <div><i class="fa-solid fa-campground"></i></div>
+                    <i class="fa-solid fa-campground"></i>
                     <p>Camping</p>
                 </a>
             </div>
             <div class="filter <%= category === 'Farms' ? 'active' : '' %>">
                 <a href="/listings?category=Farms">
-                    <div><i class="fa-solid fa-cow"></i></div>
+                    <i class="fa-solid fa-cow"></i>
                     <p>Farms</p>
                 </a>
             </div>
             <div class="filter <%= category === 'Arctic' ? 'active' : '' %>">
                 <a href="/listings?category=Arctic">
-                    <div><i class="fa-solid fa-snowflake"></i></div>
+                    <i class="fa-solid fa-snowflake"></i>
                     <p>Arctic</p>
                 </a>
             </div>
             <div class="filter <%= category === 'Domes' ? 'active' : '' %>">
                 <a href="/listings?category=Domes">
-                    <div><i class="fa-solid fa-igloo"></i></div>
+                    <i class="fa-solid fa-igloo"></i>
                     <p>Domes</p>
                 </a>
             </div>
             <div class="filter <%= category === 'Boats' ? 'active' : '' %>">
                 <a href="/listings?category=Boats">
-                    <div><i class="fa-solid fa-ship"></i></div>
+                    <i class="fa-solid fa-ship"></i>
                     <p>Boats</p>
                 </a>
             </div>
             <div class="tax-toggle">
                 <div class="form-check-reverse form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-                    <label class="form-check-label" for="switchCheckDefault">Display total after taxes<label>
+                    <label class="form-check-label" for="switchCheckDefault">Show taxes</label>
                 </div>
             </div>
         </div>
 
-        <% if (listings.length===0) { %>
-            <!-- No listings message - outside the grid -->
-            <div class="container mt-5">
-                <div class="row justify-content-center">
-                    <div class="col-md-8 col-lg-6">
-                        <div class="text-center p-5 bg-light rounded shadow-sm">
-                            <i class="fas fa-search fa-4x text-muted mb-3"></i>
-                            <h3 class="text-muted mb-3">No Listings Found</h3>
-                            <p class="text-muted mb-4">
-                                <% if (typeof category !=='undefined' && category) { %>
-                                    No listings available in "<strong class="text-danger">
-                                        <%= category %>
-                                    </strong>" category.
-                                    <% } else if (typeof searchQuery !=='undefined' && searchQuery) { %>
-                                        No results found for "<strong class="text-danger">
-                                            <%= searchQuery %>
-                                        </strong>".
-                                        <% } else { %>
-                                            No listings available at the moment.
-                                            <% } %>
-                            </p>
-                            <div class="d-flex justify-content-center gap-2 flex-wrap">
-                                <a href="/listings" class="btn btn-danger">
-                                    <i class="fas fa-home me-1"></i>All Listings
-                                </a>
-                                <a href="/listings/new" class="btn btn-success">
-                                    <i class="fas fa-plus me-1"></i>Add Listing
-                                </a>
+        <!-- Advanced Filters Section -->
+        <div class="advanced-filters"
+            style="background: white; border: 1px solid #E5E7EB; border-radius: 1rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem;">
+            <form action="/listings" method="GET" id="filterForm">
+                <div class="row align-items-end g-3">
+                    <!-- Price Range -->
+                    <div class="col-md-3">
+                        <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: #374151;">
+                            <i class="fa-solid fa-indian-rupee-sign me-1" style="color: #FE424D;"></i>Price Range
+                        </label>
+                        <div class="d-flex gap-2">
+                            <input type="number" name="minPrice" placeholder="Min" class="form-control"
+                                style="font-size: 0.9rem;"
+                                value="<%= typeof minPrice !== 'undefined' ? minPrice : '' %>">
+                            <input type="number" name="maxPrice" placeholder="Max" class="form-control"
+                                style="font-size: 0.9rem;"
+                                value="<%= typeof maxPrice !== 'undefined' ? maxPrice : '' %>">
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="col-md-3">
+                        <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: #374151;">
+                            <i class="fa-solid fa-location-dot me-1" style="color: #FE424D;"></i>Location
+                        </label>
+                        <input type="text" name="location" placeholder="City or Country" class="form-control"
+                            style="font-size: 0.9rem;"
+                            value="<%= typeof locationFilter !== 'undefined' ? locationFilter : '' %>">
+                    </div>
+
+                    <!-- Category -->
+                    <div class="col-md-3">
+                        <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: #374151;">
+                            <i class="fa-solid fa-tag me-1" style="color: #FE424D;"></i>Category
+                        </label>
+                        <select name="category" class="form-select" style="font-size: 0.9rem;">
+                            <option value="">All Categories</option>
+                            <option value="Trending" <%=category==='Trending' ? 'selected' : '' %>>Trending</option>
+                            <option value="Rooms" <%=category==='Rooms' ? 'selected' : '' %>>Rooms</option>
+                            <option value="Iconic Cities" <%=category==='Iconic Cities' ? 'selected' : '' %>>Iconic
+                                Cities</option>
+                            <option value="Mountains" <%=category==='Mountains' ? 'selected' : '' %>>Mountains</option>
+                            <option value="Castles" <%=category==='Castles' ? 'selected' : '' %>>Castles</option>
+                            <option value="Amazing Pools" <%=category==='Amazing Pools' ? 'selected' : '' %>>Amazing
+                                Pools</option>
+                            <option value="Camping" <%=category==='Camping' ? 'selected' : '' %>>Camping</option>
+                            <option value="Farms" <%=category==='Farms' ? 'selected' : '' %>>Farms</option>
+                            <option value="Arctic" <%=category==='Arctic' ? 'selected' : '' %>>Arctic</option>
+                            <option value="Domes" <%=category==='Domes' ? 'selected' : '' %>>Domes</option>
+                            <option value="Boats" <%=category==='Boats' ? 'selected' : '' %>>Boats</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter Buttons -->
+                    <div class="col-md-3">
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn flex-grow-1"
+                                style="background: linear-gradient(135deg, #FE424D 0%, #FF5A5F 100%); color: white; border: none; border-radius: 0.5rem; font-weight: 600;">
+                                <i class="fa-solid fa-filter me-1"></i>Apply
+                            </button>
+                            <a href="/listings" class="btn"
+                                style="background: #F3F4F6; color: #374151; border: none; border-radius: 0.5rem; font-weight: 600;">
+                                <i class="fa-solid fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Listings Section -->
+        <section id="listings">
+            <% if (listings.length===0) { %>
+                <!-- No listings message -->
+                <div class="container mt-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 col-lg-6">
+                            <div class="no-listings">
+                                <i class="fas fa-search fa-4x"></i>
+                                <h3>No Listings Found</h3>
+                                <p>
+                                    <% if (typeof category !=='undefined' && category) { %>
+                                        No listings available in "<strong>
+                                            <%= category %>
+                                        </strong>" category.
+                                        <% } else if (typeof searchQuery !=='undefined' && searchQuery) { %>
+                                            No results found for "<strong>
+                                                <%= searchQuery %>
+                                            </strong>".
+                                            <% } else { %>
+                                                No listings available at the moment.
+                                                <% } %>
+                                </p>
+                                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                                    <a href="/listings" class="btn-primary-custom">
+                                        <i class="fas fa-home me-1"></i>All Listings
+                                    </a>
+                                    <a href="/listings/new" class="btn-secondary-custom">
+                                        <i class="fas fa-plus me-1"></i>Add Listing
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <% } else { %>
-                <!-- Listings grid - only show when listings exist -->
-                <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-                    <% for(let listing of listings){ %>
-                        <a href="/listings/<%=listing._id%>" class="listing-link">
-                            <div class="card col listing-card">
-                                <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image"
-                                    style="height: 20rem;">
-                                <div class="card-img-overlay"></div>
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        <b>
-                                            <%= listing.title %>
-                                        </b> <br>
-                                        &#8377;<%= listing.price.toLocaleString("en-IN") %> / night
-                                            <i class="tax-info">&nbsp; &nbsp; +18% GST</i>
-                                    </p>
+                <% } else { %>
+                    <!-- Listings grid -->
+                    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+                        <% for(let listing of listings) { %>
+                            <a href="/listings/<%= listing._id %>" class="listing-link">
+                                <div class="card col listing-card">
+                                    <div style="position: relative; overflow: hidden; border-radius: 1.5rem;">
+                                        <img src="<%= listing.image.url %>" class="card-img-top"
+                                            alt="<%= listing.title %>" loading="lazy">
+                                        <div class="card-img-overlay"></div>
+                                        <% let isInWishlist=false; if (currUser && currUser.wishlist) {
+                                            isInWishlist=currUser.wishlist.some(id=> id.equals(listing._id));
+                                            }
+                                            %>
+                                            <button class="wishlist-btn <%= isInWishlist ? 'active' : '' %>"
+                                                data-listing-id="<%= listing._id %>"
+                                                onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist(this, '<%= listing._id %>');">
+                                                <i class="<%= isInWishlist ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
+                                            </button>
+                                            <div class="location-badge">
+                                                <i class="fa-solid fa-location-dot"></i>
+                                                <%= listing.location %>
+                                            </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            <b>
+                                                <%= listing.title %>
+                                            </b>
+                                            <span class="price">&#8377;<%= listing.price.toLocaleString("en-IN") %>
+                                            </span>
+                                            <span class="price-night">/ night</span>
+                                            <i class="tax-info">&nbsp;+18% GST</i>
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                        <% } %>
-                </div>
-                <% } %>
+                            </a>
+                            <% } %>
+                    </div>
+                    <% } %>
+        </section>
 
-
-
-                    <script>
-                        let taxSwitch = document.getElementById("switchCheckDefault");
-                        taxSwitch.addEventListener("click", () => {
-                            let taxInfo = document.getElementsByClassName("tax-info");
-                            for (info of taxInfo) {
-                                if (info.style.display !== "inline") {
-                                    info.style.display = "inline";
-                                } else {
-                                    info.style.display = "none";
-                                }
-                            }
-                        })
-                    </script>
+        <script>
+            let taxSwitch = document.getElementById("switchCheckDefault");
+            taxSwitch.addEventListener("click", () => {
+                let taxInfo = document.getElementsByClassName("tax-info");
+                for (let info of taxInfo) {
+                    if (info.style.display !== "inline") {
+                        info.style.display = "inline";
+                    } else {
+                        info.style.display = "none";
+                    }
+                }
+            });
+        </script>
+        <script src="/js/wishlist.js"></script>

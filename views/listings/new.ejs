@@ -1,75 +1,403 @@
-<% layout ("/layouts/boilerplate")%>
+<% layout("/layouts/boilerplate")%>
 
-    <body>
-        <div class="row mt-3">
-            <div class="col-8 offset-2">
-                <h3>Create a New Listing</h3>
-                <form method="POST" action="/listings" novalidate class="needs-validation"
-                    enctype="multipart/form-data">
+    <style>
+        .form-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: #6B7280;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E7EB;
+        }
+
+        .form-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-section-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #FE424D;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control,
+        .form-select {
+            border: 2px solid #E5E7EB;
+            border-radius: 0.75rem;
+            padding: 0.875rem 1rem;
+            font-size: 1rem;
+            transition: all 0.15s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #FE424D;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+        }
+
+        .form-control::placeholder {
+            color: #9CA3AF;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            border: 2px dashed #E5E7EB;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            background: #FAFAFA;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+
+        .file-input-wrapper:hover {
+            border-color: #FE424D;
+            background: rgba(13, 148, 136, 0.05);
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-input-wrapper i {
+            font-size: 2rem;
+            color: #FE424D;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-input-wrapper p {
+            color: #6B7280;
+            margin: 0;
+        }
+
+        .file-input-wrapper span {
+            color: #FE424D;
+            font-weight: 600;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #FE424D 0%, #FF5A5F 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.25s ease;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.3);
+        }
+
+        .category-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        .input-group-text {
+            background: #FE424D;
+            color: white;
+            border: none;
+            border-radius: 0.75rem 0 0 0.75rem;
+            padding: 0 1rem;
+            font-weight: 600;
+        }
+
+        .input-group .form-control {
+            border-radius: 0 0.75rem 0.75rem 0;
+        }
+    </style>
+
+    <div class="form-container">
+        <div class="form-header">
+            <h1><i class="fa-solid fa-plus-circle me-2" style="color: #FE424D;"></i>Create a New Listing</h1>
+            <p>Share your space with travelers from around the world</p>
+        </div>
+
+        <div class="form-card">
+            <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+
+                <!-- Basic Info Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fa-solid fa-info-circle me-1"></i> Basic Information
+                    </div>
+
                     <div class="mb-3">
-                        <label for="title" class=" for-label">Title</label>
-                        <input type="text" name="listing[title]" placeholder="Add a catchy title" class=" form-control"
-                            required>
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" name="listing[title]" id="title"
+                            placeholder="E.g., Cozy Mountain Cabin with Lake View" class="form-control" required>
                         <div class="valid-feedback">Title looks good!</div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="description" class=" for-label">Description</label>
-                        <textarea name="listing[description]" placeholder="enter description" class=" form-control"
-                            required></textarea>
-                        <div class="valid-feedback">Please enter a short description</div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="image" class=" for-label">Image</label>
-                        <input type="file" name="listing[image]" class="form-control">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="listing[description]" id="description"
+                            placeholder="Describe your space. What makes it special? What can guests expect?"
+                            class="form-control" required></textarea>
+                        <div class="invalid-feedback">Please enter a short description</div>
                     </div>
 
                     <div class="mb-3">
                         <label for="category" class="form-label">Category</label>
-                        <select name="listing[category]" class="form-control" required>
-                            <option value="" disabled selected>Select category</option>
-                            <option value="Trending">Trending</option>
-                            <option value="Rooms">Rooms</option>
-                            <option value="Iconic Cities">Iconic Cities</option>
-                            <option value="Mountains">Mountains</option>
-                            <option value="Castles">Castles</option>
-                            <option value="Amazing Pools">Amazing Pools</option>
-                            <option value="Camping">Camping</option>
-                            <option value="Farms">Farms</option>
-                            <option value="Arctic">Arctic</option>
-                            <option value="Domes">Domes</option>
-                            <option value="Boats">Boats</option>
+                        <select name="listing[category]" id="category" class="form-select category-select" required>
+                            <option value="" disabled selected>Select a category</option>
+                            <option value="Trending">🔥 Trending</option>
+                            <option value="Rooms">🛏️ Rooms</option>
+                            <option value="Iconic Cities">🏙️ Iconic Cities</option>
+                            <option value="Mountains">⛰️ Mountains</option>
+                            <option value="Castles">🏰 Castles</option>
+                            <option value="Amazing Pools">🏊 Amazing Pools</option>
+                            <option value="Camping">🏕️ Camping</option>
+                            <option value="Farms">🐄 Farms</option>
+                            <option value="Arctic">❄️ Arctic</option>
+                            <option value="Domes">🏠 Domes</option>
+                            <option value="Boats">🚢 Boats</option>
                         </select>
                         <div class="invalid-feedback">Please select a category</div>
+                    </div>
+                </div>
+
+                <!-- Image Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fa-solid fa-images me-1"></i> Images (Up to 5)
+                    </div>
+
+                    <div class="file-input-wrapper">
+                        <input type="file" name="listing[images]" accept="image/*" multiple required>
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p><span>Click to upload</span> or drag and drop</p>
+                        <p style="font-size: 0.75rem; margin-top: 0.25rem;">PNG, JPG, WEBP (Max 5MB each, up to 5
+                            images)</p>
+                    </div>
+                    <div id="imagePreview" style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;"></div>
+                </div>
+
+                <script>
+                    document.querySelector('input[name="listing[images]"]').addEventListener('change', function (e) {
+                        const preview = document.getElementById('imagePreview');
+                        preview.innerHTML = '';
+                        const files = e.target.files;
+
+                        if (files.length > 5) {
+                            alert('Maximum 5 images allowed');
+                            e.target.value = '';
+                            return;
+                        }
+
+                        for (let i = 0; i < Math.min(files.length, 5); i++) {
+                            const reader = new FileReader();
+                            reader.onload = function (event) {
+                                const img = document.createElement('img');
+                                img.src = event.target.result;
+                                img.style.cssText = 'width: 80px; height: 80px; object-fit: cover; border-radius: 0.5rem; border: 2px solid ' + (i === 0 ? '#FE424D' : '#E5E7EB');
+                                if (i === 0) {
+                                    const wrapper = document.createElement('div');
+                                    wrapper.style.cssText = 'position: relative;';
+                                    wrapper.innerHTML = '<span style="position: absolute; top: -8px; left: -8px; background: #FE424D; color: white; font-size: 0.6rem; padding: 2px 6px; border-radius: 10px;">Primary</span>';
+                                    wrapper.appendChild(img);
+                                    preview.appendChild(wrapper);
+                                } else {
+                                    preview.appendChild(img);
+                                }
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                    });
+                </script>
+
+                <!-- Location & Price Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fa-solid fa-location-dot me-1"></i> Location & Pricing
                     </div>
 
                     <div class="row">
                         <div class="mb-3 col-md-4">
-                            <label for="price" class=" for-label">Price</label>
-                            <input name="listing[price]" placeholder="1200" class=" form-control" required>
+                            <label for="price" class="form-label">Price per Night</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="listing[price]" id="price" placeholder="1200"
+                                    class="form-control" required>
+                            </div>
                             <div class="invalid-feedback">Price should be valid</div>
                         </div>
 
                         <div class="mb-3 col-md-8">
-                            <label for="country" class=" for-label">Country</label>
-                            <input type="text" name="listing[country]" placeholder="India" class=" form-control"
-                                required>
+                            <label for="country" class="form-label">Country</label>
+                            <input type="text" name="listing[country]" id="country" placeholder="India"
+                                class="form-control" required>
                             <div class="invalid-feedback">Country name should be valid</div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="location" class=" for-label">Location</label>
-                        <input type="text" name="listing[location]" placeholder="Jaipur, Rajasthan"
-                            class=" form-control" required>
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" name="listing[location]" id="location" placeholder="Jaipur, Rajasthan"
+                            class="form-control" required>
                         <div class="invalid-feedback">Location should be valid</div>
                     </div>
+                </div>
 
+                <!-- Amenities Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fa-solid fa-check-circle me-1"></i> Amenities
+                    </div>
 
-                    <button class="btn btn-dark add-btn mt-3">Add</button>
+                    <div class="row g-2">
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]" value="WiFi"
+                                    id="wifi">
+                                <label class="form-check-label" for="wifi"><i
+                                        class="fa-solid fa-wifi me-1"></i>WiFi</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]" value="AC"
+                                    id="ac">
+                                <label class="form-check-label" for="ac"><i
+                                        class="fa-solid fa-snowflake me-1"></i>AC</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]" value="TV"
+                                    id="tv">
+                                <label class="form-check-label" for="tv"><i class="fa-solid fa-tv me-1"></i>TV</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]"
+                                    value="Kitchen" id="kitchen">
+                                <label class="form-check-label" for="kitchen"><i
+                                        class="fa-solid fa-utensils me-1"></i>Kitchen</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]" value="Washer"
+                                    id="washer">
+                                <label class="form-check-label" for="washer"><i
+                                        class="fa-solid fa-soap me-1"></i>Washer</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]"
+                                    value="Parking" id="parking">
+                                <label class="form-check-label" for="parking"><i
+                                        class="fa-solid fa-square-parking me-1"></i>Parking</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]" value="Pool"
+                                    id="pool">
+                                <label class="form-check-label" for="pool"><i
+                                        class="fa-solid fa-water-ladder me-1"></i>Pool</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]"
+                                    value="Hot Tub" id="hottub">
+                                <label class="form-check-label" for="hottub"><i
+                                        class="fa-solid fa-hot-tub-person me-1"></i>Hot Tub</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]" value="Gym"
+                                    id="gym">
+                                <label class="form-check-label" for="gym"><i
+                                        class="fa-solid fa-dumbbell me-1"></i>Gym</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]"
+                                    value="Fireplace" id="fireplace">
+                                <label class="form-check-label" for="fireplace"><i
+                                        class="fa-solid fa-fire me-1"></i>Fireplace</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]"
+                                    value="Balcony" id="balcony">
+                                <label class="form-check-label" for="balcony"><i
+                                        class="fa-solid fa-building me-1"></i>Balcony</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="listing[amenities]"
+                                    value="Pet Friendly" id="pet">
+                                <label class="form-check-label" for="pet"><i class="fa-solid fa-paw me-1"></i>Pet
+                                    Friendly</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                </form>
-            </div>
+                <button class="btn-submit" type="submit">
+                    <i class="fa-solid fa-rocket me-2"></i>Publish Listing
+                </button>
+            </form>
         </div>
-    </body>
+    </div>

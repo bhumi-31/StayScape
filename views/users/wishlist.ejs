@@ -1,0 +1,107 @@
+<% layout("/layouts/boilerplate")%>
+
+    <style>
+        .wishlist-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .wishlist-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .wishlist-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .wishlist-header h1 i {
+            color: #EF4444;
+            margin-right: 0.5rem;
+        }
+
+        .wishlist-header p {
+            color: var(--text-secondary);
+        }
+
+        .empty-wishlist {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .empty-wishlist i {
+            font-size: 4rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-wishlist h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-wishlist p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+    </style>
+
+    <div class="wishlist-container">
+        <div class="wishlist-header">
+            <h1><i class="fa-solid fa-heart"></i>My Wishlist</h1>
+            <p>
+                <%= wishlistListings.length %> saved <%= wishlistListings.length===1 ? 'listing' : 'listings' %>
+            </p>
+        </div>
+
+        <% if (wishlistListings.length===0) { %>
+            <div class="empty-wishlist">
+                <i class="fa-regular fa-heart"></i>
+                <h3>Your wishlist is empty</h3>
+                <p>Start saving your favorite places by clicking the heart icon on any listing.</p>
+                <a href="/listings" class="btn-primary-custom">
+                    <i class="fa-solid fa-compass me-2"></i>Explore Listings
+                </a>
+            </div>
+            <% } else { %>
+                <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+                    <% for(let listing of wishlistListings) { %>
+                        <a href="/listings/<%= listing._id %>" class="listing-link">
+                            <div class="card col listing-card">
+                                <div style="position: relative; overflow: hidden; border-radius: 1.5rem;">
+                                    <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>"
+                                        loading="lazy">
+                                    <div class="card-img-overlay"></div>
+                                    <button class="wishlist-btn active" data-listing-id="<%= listing._id %>"
+                                        onclick="event.preventDefault(); toggleWishlist(this, '<%= listing._id %>');">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </button>
+                                    <div class="location-badge">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <%= listing.location %>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        <b>
+                                            <%= listing.title %>
+                                        </b>
+                                        <span class="price">&#8377;<%= listing.price.toLocaleString("en-IN") %></span>
+                                        <span class="price-night">/ night</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                        <% } %>
+                </div>
+                <% } %>
+    </div>
+
+    <script src="/js/wishlist.js"></script>
