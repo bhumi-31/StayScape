@@ -256,18 +256,18 @@ Create a `.env` file in the root directory:
 
 ```env
 # Database
-ATLASDB_URL=mongodb+srv://username:password@cluster.mongodb.net/stayscape
+ATLASDB_URL=<your-mongodb-atlas-connection-string>
 
 # Session
-SECRET=your-session-secret-key
+SECRET=<your-session-secret>
 
 # Cloudinary
-CLOUD_NAME=your-cloudinary-cloud-name
-CLOUD_API_KEY=your-cloudinary-api-key
-CLOUD_API_SECRET=your-cloudinary-api-secret
+CLOUD_NAME=<your-cloud-name>
+CLOUD_API_KEY=<your-api-key>
+CLOUD_API_SECRET=<your-api-secret>
 
 # Mapbox
-MAP_TOKEN=pk.your-mapbox-public-token
+MAP_TOKEN=<your-mapbox-token>
 ```
 
 ---
