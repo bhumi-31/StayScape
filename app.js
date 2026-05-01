@@ -53,16 +53,12 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
-    crypto: {
-        secret: process.env.SECRET,
-        // secret : "omnamahshivay"
-    },
     touchAfter: 24 * 3600
-})
+});
 
-store.on("error", () => {
+store.on("error", (err) => {
     console.log("ERROR in MONGO SESSION STORE", err);
-})
+});
 
 const sessionOptions = {
     store: store,
@@ -132,6 +128,10 @@ app.use((req, res, next) => {
 
 
 app.use((err, req, res, next) => {
+    // Check if headers already sent
+    if (res.headersSent) {
+        return next(err);
+    }
     let { statusCode = 500, message = "Something went wrong!" } = err;
     res.status(statusCode).render("error.ejs", { message });
     // res.status(statusCode).send(message);

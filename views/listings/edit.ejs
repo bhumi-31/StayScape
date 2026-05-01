@@ -1,8 +1,37 @@
 <% layout ("/layouts/boilerplate")%>
 
+    <style>
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6B7280;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+
+        .btn-back:hover {
+            color: #FE424D;
+        }
+
+        .btn-back i {
+            transition: transform 0.15s ease;
+        }
+
+        .btn-back:hover i {
+            transform: translateX(-3px);
+        }
+    </style>
+
     <body>
         <div class="row mt-3">
             <div class="col-8 offset-2">
+                <a href="/listings/<%= listing._id %>" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back to listing</span>
+                </a>
                 <h3>Edit your Listing</h3>
                 <form method="POST" action="/listings/<%=listing._id%>?_method=PUT" novalidate class="needs-validation"
                     enctype="multipart/form-data">

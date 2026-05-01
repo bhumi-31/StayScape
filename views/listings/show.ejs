@@ -224,9 +224,28 @@
                 height: 40vh;
             }
         }
+
+        .btn-back:hover {
+            color: #FE424D;
+        }
+
+        .btn-back i {
+            transition: transform 0.15s ease;
+        }
+
+        .btn-back:hover i {
+            transform: translateX(-3px);
+        }
     </style>
 
     <div class="show-container">
+        <!-- Back Button -->
+        <a href="/listings" class="btn-back"
+            style="display: inline-flex; align-items: center; gap: 0.5rem; color: #6B7280; text-decoration: none; margin-bottom: 1rem; font-weight: 500; transition: color 0.15s ease;">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Back to listings</span>
+        </a>
+
         <!-- Header -->
         <div class="listing-header">
             <h1>

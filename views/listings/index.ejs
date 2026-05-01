@@ -7,12 +7,17 @@
                 <h1 class="hero-title">Find your next <span>adventure</span></h1>
                 <p class="hero-subtitle">Discover unique stays and experiences around the world. From mountain cabins to
                     beachfront villas, your perfect getaway awaits.</p>
-                <div class="hero-cta">
-                    <a href="#listings" class="btn-primary-custom">
-                        <i class="fa-solid fa-compass me-2"></i>Explore Stays
+                <div class="hero-cta"
+                    style="display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                    <a href="#listings"
+                        style="background: linear-gradient(135deg, #FE424D 0%, #FF5A5F 100%); color: white; border: none; padding: 12px 28px; border-radius: 50px; font-weight: 600; font-size: 1rem; text-decoration: none; display: inline-flex; flex-direction: row; align-items: center; justify-content: center; height: 52px; gap: 10px;">
+                        <i class="fa-solid fa-compass" style="font-size: 16px; color: white;"></i>
+                        <span>Explore Stays</span>
                     </a>
-                    <a href="/listings/new" class="btn-secondary-custom">
-                        <i class="fa-solid fa-plus me-2"></i>Become a Host
+                    <a href="/listings/new"
+                        style="background: white; color: #1F2937; border: 2px solid #E5E7EB; padding: 12px 28px; border-radius: 50px; font-weight: 600; font-size: 1rem; text-decoration: none; display: inline-flex; flex-direction: row; align-items: center; justify-content: center; height: 52px; gap: 10px;">
+                        <i class="fa-solid fa-plus" style="font-size: 16px; color: #FE424D;"></i>
+                        <span>Become a Host</span>
                     </a>
                 </div>
             </div>
@@ -149,13 +154,16 @@
 
                     <!-- Filter Buttons -->
                     <div class="col-md-3">
-                        <div class="d-flex gap-2">
+                        <label class="form-label"
+                            style="font-size: 0.85rem; font-weight: 600; color: transparent;">&nbsp;</label>
+                        <div class="d-flex gap-2 align-items-center">
                             <button type="submit" class="btn flex-grow-1"
-                                style="background: linear-gradient(135deg, #FE424D 0%, #FF5A5F 100%); color: white; border: none; border-radius: 0.5rem; font-weight: 600;">
-                                <i class="fa-solid fa-filter me-1"></i>Apply
+                                style="background: linear-gradient(135deg, #FE424D 0%, #FF5A5F 100%); color: white; border: none; border-radius: 0.5rem; font-weight: 600; height: 50px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                <i class="fa-solid fa-filter"></i>
+                                <span>Apply</span>
                             </button>
                             <a href="/listings" class="btn"
-                                style="background: #F3F4F6; color: #374151; border: none; border-radius: 0.5rem; font-weight: 600;">
+                                style="background: #F3F4F6; color: #374151; border: none; border-radius: 0.5rem; font-weight: 600; height: 50px; display: flex; align-items: center; justify-content: center;">
                                 <i class="fa-solid fa-times"></i>
                             </a>
                         </div>
@@ -187,17 +195,17 @@
                                                 No listings available at the moment.
                                                 <% } %>
                                 </p>
-                                <div class="d-flex justify-content-center gap-3 flex-wrap">
-                                    <a href="/listings" class="btn-primary-custom">
-                                        <i class="fas fa-home me-1"></i>All Listings
-                                    </a>
-                                    <a href="/listings/new" class="btn-secondary-custom">
-                                        <i class="fas fa-plus me-1"></i>Add Listing
-                                    </a>
+                                <div
+                                    style="display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                    <a href="/listings" class="btn-primary-custom"><i class="fas fa-home"
+                                            style="color: white;"></i> All Listings</a>
+                                    <a href="/listings/new" class="btn-secondary-custom"><i class="fas fa-plus"
+                                            style="color: #FE424D;"></i> Add Listing</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 <% } else { %>
                     <!-- Listings grid -->
